@@ -3,18 +3,19 @@ let userseq = [];
 
 let colors = ["green","red","purple","orange"];
 
-let started = false;
+let started = true;
 
 let level = 0;
 
 let h2 = document.querySelector("h2");
+
+let score = 0;
 
 document.addEventListener("keypress",function(){
     if(started==false){
         console.log("game started");
         started = true;
     }
-    
     levelup();
 })
 
@@ -23,7 +24,6 @@ function levelup(){
     userseq = [];
     level++;
     h2.innerText = `Level ${level}`;
-
     let randidx = Math.floor(Math.random()*3);
     let randomcolor = colors[randidx];
     let randombtn = document.querySelector(`.${randomcolor}`);
@@ -33,25 +33,22 @@ function levelup(){
 }
 
 function checkans(idx){
-    // // let idx = level-1;
-    // let score = 0;
-    if(userseq[idx]===gameseq[idx]){
+    if(userseq[idx] === gameseq[idx]){
         if(userseq.length == gameseq.length){
-            setTimeout(levelup,1000);
+            setTimeout(levelup, 1000);
         }
     } else {
         h2.innerHTML = `Game Over! Your score is <b>${level}</b> <br> Press any key to start again.`
         score = level;
-        highestscore();
+        highestscore(score);
         document.querySelector("body").style.backgroundColor = "red";
         setTimeout(function(){
             document.querySelector("body").style.backgroundColor = "white";
-        },200)
-        
+        }, 200)
+        reset();
     }
-    reset();
-
 }
+
 
 
 function btnflash(btn){
@@ -69,15 +66,13 @@ function userflash(btn){
 }
 
 function btnpress(){
-    console.log(this);
     let btn = this;
+    console.log(btn)
     userflash(btn);
-
     let usercolor = btn.getAttribute("id");
-    // console.log(usercolor);
+    console.log(usercolor)
     userseq.push(usercolor);
     console.log(userseq);
-
     checkans(userseq.length-1);
 }
 
@@ -93,7 +88,7 @@ function reset(){
     level = 0;
 }
 
-// function highestscore(sc){
-//     let h3 = document.querySelector("h3");
-//     h3.innerText = `Your Highest score is : ${sc}`;
-// }
+function highestscore(sc){
+    let h3 = document.querySelector("h3");
+    h3.innerText = `Your Highest score is : ${sc}`;
+}
